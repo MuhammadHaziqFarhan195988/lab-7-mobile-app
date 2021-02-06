@@ -1,6 +1,4 @@
-import 'package:camera_app/screen/authenticate/sign_in.dart';
 import 'package:camera_app/screen/home/homepage.dart';
-import 'package:camera_app/screen/home/imageGallery.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +15,6 @@ class Fingerprint extends StatelessWidget {
         elevation: 0.0,
         title: Text('Login using fingerprint'),
         actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.fingerprint),
-            label: Text('Phone sign in'),
-            onPressed: (){
-              Navigator.pop(context);},
-          )
         ],
       ),
       body: GestureDetector(

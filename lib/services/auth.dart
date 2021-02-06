@@ -18,7 +18,7 @@ class AuthService{
        return LandingScreen();
      }
      else {
-       return SignIn();
+       return Fingerprint();
      }
    });
 }

@@ -1,5 +1,6 @@
 import 'package:camera_app/screen/home/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -14,11 +15,14 @@ class UploadPhotoPage extends StatefulWidget {
 
 class _UploadPhotoPageState extends State<UploadPhotoPage> {
 
+  List tags = new List();
   File sampleImage;
   String _myValue;
   String url;
   final formKey = new GlobalKey<FormState>();
+  final GlobalKey<TagsState> _globalKey = GlobalKey<TagsState>();
   String _locationMessage;
+
 
   void _getCurrentLocation() async {
 
@@ -187,40 +191,75 @@ void saveToDatabase(url) async {
 
 
 Widget enableUpload(){
-return Container(
+return ListView(
 
-  child: Form(
-    key: formKey,
-    child: Column(
-      children: <Widget>[
-        Image.file(sampleImage,height: 330.0,width: 660.0,),
-
-        SizedBox(height: 15.0,)
-
-        ,TextFormField(
-          decoration: InputDecoration(labelText: 'Description'),
-
-          validator: (value){
-            return value.isEmpty ? 'Description required' : null;
+  children: [
+    Tags(
+      key: _globalKey,
+      itemCount: tags.length,
+      columns: 6,
+      textField: TagsTextField(
+        textStyle: TextStyle(fontSize: 14),
+        onSubmitted: (string) {
+          setState(() {
+            tags.add(Item(title: string));
+          });
+        }
+      ),
+      itemBuilder: (index) {
+        final Item currentItem = tags[index];
+        
+        return ItemTags(
+            index: index,
+            title: currentItem.title,
+        customData: currentItem.customData,
+        textStyle: TextStyle(fontSize: 14),
+        combine: ItemTagsCombine.withTextBefore,
+        onPressed: (i) => print(i),
+        onLongPressed: (i) => print(i),
+        removeButton: ItemTagsRemoveButton(
+          onRemoved: () {
+            setState(() {
+              tags.removeAt(index);
+            });
+            return true;
           },
+        ),);
+      },
+    ),
+      Form(
+      key: formKey,
+      child: Column(
+        children: <Widget>[
+          Image.file(sampleImage,height: 330.0,width: 660.0,),
 
-          onSaved: (value){
-            return _myValue=value;
-          },
-        ),
+          SizedBox(height: 15.0,)
 
-        SizedBox(height: 15.0,),
-        RaisedButton(
-          elevation: 10.0,
-          child: Text("upload image"),
-          textColor: Colors.white,
-          color: Colors.blue,
-          onPressed: uploadStatusImage,
-        )
+          ,TextFormField(
+            decoration: InputDecoration(labelText: 'Description'),
 
-      ],
+            validator: (value){
+              return value.isEmpty ? 'Description required' : null;
+            },
 
-    ),),
+            onSaved: (value){
+              return _myValue=value;
+            },
+          ),
+
+          SizedBox(height: 15.0,),
+          RaisedButton(
+            elevation: 10.0,
+            child: Text("upload image"),
+            textColor: Colors.white,
+            color: Colors.blue,
+            onPressed: uploadStatusImage,
+          )
+
+        ],
+
+      ),),
+    ],
 
 );
 }

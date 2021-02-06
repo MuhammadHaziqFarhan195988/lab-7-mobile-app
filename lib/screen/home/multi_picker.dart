@@ -1,21 +1,22 @@
+import 'dart:io';
+
 import 'package:camera_app/blocs/select_theme.dart';
 import 'package:camera_app/screen/home/PhotoUpload.dart';
-import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:camera_app/services/Posts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
+
+import 'homepage.dart';
 
 
-import 'multi_picker.dart';
-
-
-class LandingScreen extends StatefulWidget{
-
+class MultiPicker extends StatefulWidget {
   @override
-  _LandingScreenState createState() => _LandingScreenState();
+  _MultiPickerState createState() => _MultiPickerState();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _MultiPickerState extends State<MultiPicker> {
   File imageFile;
 
   List<Posts> postsList = [];
@@ -42,7 +43,7 @@ class _LandingScreenState extends State<LandingScreen> {
             DATA[individualKey]['location']);
 
 
-      postsList.add(posts);
+        postsList.add(posts);
       }
 
       setState(() {
@@ -53,21 +54,14 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
 
         title: Text("Home Screen"),
         elevation: 0.0,
         actions: <Widget>[
-          FlatButton.icon(
-             icon:  Icon(Icons.person),
-            label: Text("Exit"),
-          onPressed: () => exit(0),
-    ),
 
         ],
-
       ),
       drawer: new Drawer(
         child: ListView(
@@ -92,19 +86,23 @@ class _LandingScreenState extends State<LandingScreen> {
         ),
       ),
       body: Container(
-
-        child:
-       postsList.length == 0? new Text("No images in this app") : new ListView.builder(
-            itemCount: postsList.length+1,
+        child: postsList.length == 0? new Text("No images in this app") : new GridView.builder(
+            itemCount: postsList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3),
             itemBuilder: (_, index)
-              {
+            {
+              return Container(
+              margin: EdgeInsets.all(3),
+              child: FadeInImage.memoryNetwork(
+                fit: BoxFit.cover,
+                placeholder: kTransparentImage,
+                image: postsList[index].image,
+              ),
+              );
 
-                return index == 0? _searchBar(): PostsUI(postsList[index-1].image,postsList[index-1].description,postsList[index-1].date,postsList[index-1].time,postsList[index-1].location);
-
-              }
-          ),
-
-
+            }
+        ),
       ),
 
       bottomNavigationBar: new BottomAppBar(
@@ -129,20 +127,15 @@ class _LandingScreenState extends State<LandingScreen> {
                         return UploadPhotoPage();
                       }
                   ));
-                  },
+                },
               ),
               IconButton(
-                icon: Icon(Icons.photo),
+                icon: Icon(Icons.list),
                 iconSize: 50,
                 color: Colors.white,
 
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context){
-                        return MultiPicker();
-                      }
-                  ));
-                },
+                onPressed: () => Navigator.of(context).pop()
+
               )
             ],
           ),
@@ -150,29 +143,7 @@ class _LandingScreenState extends State<LandingScreen> {
       ),
     );
   }
-
-  _searchBar(){
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Search...'
-        ),
-        onChanged: (text){
-          text = text.toLowerCase();
-          setState(() {
-            postsList = postsList.where((Posts){
-              var PostDesc = Posts.description.toLowerCase();
-              return PostDesc.contains(text);
-            }).toList();
-          });
-        },
-      ),
-    );
-  }
-
-
-  Widget PostsUI(String image, String description,String date, String time,String location){
+  Widget PostsUI(String image){
     return Card(
       elevation: 10.0,
       margin:EdgeInsets.all(15.0),
@@ -190,22 +161,6 @@ class _LandingScreenState extends State<LandingScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Text(
-                  date,
-                  style: Theme.of(context).textTheme.subtitle2,
-                  textAlign: TextAlign.center,
-                ),
-                new Text(
-                  "($location)",
-                  style: Theme.of(context).textTheme.subtitle2,
-                  textAlign: TextAlign.center,
-                ),
-                new Text(
-                  time,
-                  style: Theme.of(context).textTheme.subtitle2,
-                  textAlign: TextAlign.center,
-                ),
-
               ],
             ),
             SizedBox(height: 10.0,),
@@ -214,11 +169,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
             SizedBox(height: 10.0,),
 
-            new Text(
-              description,
-              style: Theme.of(context).textTheme.subtitle1,
-              textAlign: TextAlign.center,
-            ),
+
           ],
 
         ),
@@ -229,5 +180,5 @@ class _LandingScreenState extends State<LandingScreen> {
 
 
   }
-}
+  }
 

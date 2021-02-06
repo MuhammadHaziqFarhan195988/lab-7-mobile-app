@@ -31,15 +31,7 @@ String phoneNo,verificationID;
         elevation: 0.0,
         title: Text('Log in using phone number'),
         actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.fingerprint),
-            label: Text('Fingerprint sign in'),
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Fingerprint()),
-              );},
-          )
+
         ],
       ),
      body: Form(

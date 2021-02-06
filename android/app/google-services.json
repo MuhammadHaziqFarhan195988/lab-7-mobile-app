@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "622811678211",
-    "project_id": "photo-app-67145",
-    "storage_bucket": "photo-app-67145.appspot.com"
+    "project_number": "243171681910",
+    "project_id": "cameraapp-45f61",
+    "storage_bucket": "cameraapp-45f61.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:622811678211:android:41204dd721d6e0a94bf036",
+        "mobilesdk_app_id": "1:243171681910:android:5baf7c7fab1d9864402157",
         "android_client_info": {
           "package_name": "com.cameraapp.camera_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "622811678211-55vr73d2km6i6t3vprb5f5mfricn8m0n.apps.googleusercontent.com",
+          "client_id": "243171681910-159o9v482dr4qga7ier7e1kigl8l6425.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBm_DESVQ5CAFNKLVCzXomRfhZrA627hW8"
+          "current_key": "AIzaSyAYM9GVohzQBMsUFaFdoOxzGscSAI4OkZ4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "622811678211-55vr73d2km6i6t3vprb5f5mfricn8m0n.apps.googleusercontent.com",
+              "client_id": "243171681910-159o9v482dr4qga7ier7e1kigl8l6425.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
